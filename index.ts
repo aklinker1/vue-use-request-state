@@ -7,6 +7,8 @@ export enum RequestState {
   FAILURE = 3,
 }
 
+type PerformRequest = (...args: any[]) => any;
+
 interface ComposedRequestState {
   requestState: Ref<RequestState>;
   error: Ref<Error | undefined>;
@@ -15,9 +17,9 @@ interface ComposedRequestState {
   isFailure: ComputedRef<boolean>;
   isNotRequested: ComputedRef<boolean>;
   errorMessage: ComputedRef<string | undefined>;
-  wrapRequest<T extends (...args: any[]) => void>(
+  wrapRequest<T extends PerformRequest>(
     performRequest: T,
-  ): (...args: Parameters<T>) => Promise<void>;
+  ): (...args: Parameters<T>) => Promise<ReturnType<T>>;
   reset(): void;
 }
 
@@ -36,16 +38,18 @@ export default function useRequestState(): ComposedRequestState {
 
   // Utils
   const wrapRequest =
-    <T extends (...args: any[]) => void>(executor: T) =>
-    async (...args: Parameters<T>): Promise<void> => {
+    <T extends PerformRequest>(executor: T) =>
+    async (...args: Parameters<T>): Promise<ReturnType<T>> => {
       requestState.value = RequestState.LOADING;
       error.value = undefined;
       try {
-        await executor(...args);
+        const res = await executor(...args);
         requestState.value = RequestState.SUCCESS;
+        return res;
       } catch (err) {
         error.value = err;
         requestState.value = RequestState.FAILURE;
+        throw err;
       }
     };
   const reset = () => {

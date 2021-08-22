@@ -21,7 +21,9 @@
   "scripts": {
     "compile": "tsc --noEmit",
     "format": "prettier --write .",
-    "build": "vite build",
+    "build": "yarn build:lib && yarn build:types",
+    "build:lib": "vite build",
+    "build:types": "tsc",
     "prepare": "husky install"
   },
   "devDependencies": {
