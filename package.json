@@ -1,6 +1,6 @@
 {
   "name": "vue-use-request-state",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Simple composition function for tracking async operations",
   "repository": "https://github.com/aklinker1/vue-use-request-state",
   "author": "Aaron Klinker <aaronklinker1@gmail.com>",
