@@ -19,11 +19,11 @@
     }
   },
   "scripts": {
-    "compile": "tsc --noEmit",
+    "compile": "tsc",
     "format": "prettier --write .",
     "build": "yarn build:lib && yarn build:types",
     "build:lib": "vite build",
-    "build:types": "tsc",
+    "build:types": "yarn compile",
     "prepare": "husky install"
   },
   "devDependencies": {
