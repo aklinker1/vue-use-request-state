@@ -7,12 +7,13 @@
     "jsx": "preserve",
     "sourceMap": true,
     "esModuleInterop": true,
-    "noEmit": true,
     "skipLibCheck": true,
     "noImplicitAny": false,
+    "lib": ["esnext"],
+    "outDir": "dist",
     "declaration": true,
     "declarationDir": "dist",
-    "lib": ["esnext"]
+    "emitDeclarationOnly": true
   },
   "include": ["index.ts"]
 }
