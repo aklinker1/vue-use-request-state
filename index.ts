@@ -7,7 +7,7 @@ export enum RequestState {
   FAILURE = 3,
 }
 
-type PerformRequest = (...args: any[]) => any;
+type PerformRequest = (...args: any[]) => Promise<any>;
 
 interface ComposedRequestState {
   requestState: Ref<RequestState>;
@@ -19,7 +19,7 @@ interface ComposedRequestState {
   errorMessage: ComputedRef<string | undefined>;
   wrapRequest<T extends PerformRequest>(
     performRequest: T,
-  ): (...args: Parameters<T>) => Promise<ReturnType<T>>;
+  ): (...args: Parameters<T>) => ReturnType<T>;
   reset(): void;
 }
 
@@ -39,7 +39,8 @@ export default function useRequestState(): ComposedRequestState {
   // Utils
   const wrapRequest =
     <T extends PerformRequest>(executor: T) =>
-    async (...args: Parameters<T>): Promise<ReturnType<T>> => {
+    // @ts-expect-error: Type errors while trying to prevent double promises
+    async (...args: Parameters<T>): ReturnType<T> => {
       requestState.value = RequestState.LOADING;
       error.value = undefined;
       try {
