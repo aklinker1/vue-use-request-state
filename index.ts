@@ -50,7 +50,6 @@ export default function useRequestState(): ComposedRequestState {
       } catch (err) {
         error.value = err;
         requestState.value = RequestState.FAILURE;
-        throw err;
       }
     };
   const reset = () => {
